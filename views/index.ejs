@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webhook Data</title>
+</head>
+<body>
+<h1>Data Received from Webhook</h1>
+
+<div id="dataContainer"></div>
+
+<script>
+const dataContainer = document.querySelector('#dataContainer');
+
+const updateData = () => {
+  fetch('/data')
+    .then(response => response.json())
+    .then(data => {
+      let html = '';
+
+      for (const key in data) {
+        if (typeof data[key] === 'object') {
+          html += `${key}: ${JSON.stringify(data[key])}<br>`;
+        } else {
+          html += `${key}: ${data[key]}<br>`;
+        }
+      }
+
+      dataContainer.innerHTML = html;
+    })
+    .catch(error => console.error(error));
+};
+
+updateData();
+setInterval(updateData, 1000);
+</script>
+</body>
+</html>
